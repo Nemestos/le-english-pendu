@@ -70,3 +70,11 @@ p {
   cursor: pointer;
   background-color: azure;
 }
+#word{
+  text-align: center;
+  font-family: "Luxurious Roman";
+  font-size: 3rem;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}

@@ -9,14 +9,16 @@ export default class Game {
     constructor() {
         this.verbs = verbs
         this.words = words
-
         this.modes = []
         this.curr = []
+        this.guessed = new Set()
+        this.to_guess = null
     }
+
 
     newGen() {
         const ran = rand_item(this.curr)
-        console.log(ran)
+        this.to_guess=ran
     }
 
 
