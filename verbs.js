@@ -20,7 +20,7 @@ export default verbs = [{
     {
         "Base": "bear",
         "Past-simple": "bore",
-        "Past-Participle": "born(e)"
+        "Past-Participle": "born"
 
     },
     {
@@ -408,13 +408,13 @@ export default verbs = [{
 
     },
     {
-        "Base": "lie (in bed)",
+        "Base": "lie",
         "Past-simple": "lay",
         "Past-Participle": "lain"
 
     },
     {
-        "Base": "lie (to not tell the truth)",
+        "Base": "lie",
         "Past-simple": "lied",
         "Past-Participle": "lied"
 

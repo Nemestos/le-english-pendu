@@ -81,9 +81,10 @@ function updateWord() {
 
 function resetAll() {
     updateAlphabet();
-    updateModes()
-    updateWord()
-    game.guessed = new Set()
+    updateModes();
+    updateWord();
+    game.guessed = new Set();
+   
 
 }
 
