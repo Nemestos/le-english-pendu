@@ -13,6 +13,7 @@ export default class Game {
         this.curr = []
         this.guessed = new Set()
         this.to_guess = null
+        this.chances = 10;
     }
 
 
@@ -27,6 +28,6 @@ export default class Game {
             nom: name,
             f: func
         })
-    }
+    } 
 
 }

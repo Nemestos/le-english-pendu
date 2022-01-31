@@ -78,3 +78,8 @@ p {
   justify-content: center;
   gap: 10px;
 }
+#lost{
+  text-align: center;
+  background-color: cadetblue;
+  color:darkorange;
+}

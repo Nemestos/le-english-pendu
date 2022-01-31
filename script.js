@@ -1,26 +1,45 @@
 import Game from "./state.js";
+import words from "./words.js";
 
 const alphabet = document.getElementById("alphabet");
 const modes = document.getElementById("modes")
 const curr = document.getElementById("curr-mode")
 const guess = document.getElementById("word")
+let chances = 0;
 
 function genAlphabetItem(letter) {
     const elt = document.createElement("div");
     elt.id = "letter"
     elt.dataset.letter = letter
+    const divChance = document.getElementById("chances");
     elt.addEventListener("click", (evt) => {
         game.guessed.add(letter)
         elt.classList.add("disabled")
         elt.style.pointerEvents = "none"
         elt.style.backgroundColor = isExisting(letter)?"green":"red"
+        let divChance = document.getElementById('chances');
+        divChance.innerHTML = ""
+        chances = isExisting(letter)?chances:chances-=1
+        if (chances<1){
+            alphabet.innerHTML = lost();
+        }
+        divChance.innerHTML = "Remaining chances: "+chances;
         updateWord()
     })
     elt.innerText = letter
     return elt
 }
+
 function getWord(){
     return curr.innerText=="RANDOM"?game.to_guess.English:game.to_guess.Base
+}
+
+function lost(){
+    return `
+    <div id="lost">
+    <h1>You lost !</h1>
+    </div>
+    `
 }
 function isWinning(){
     const w= getWord()
@@ -78,11 +97,16 @@ function updateWord() {
         }
     }
 }
-
-function resetAll() {
+function updateChances(){
+    let divChance = document.getElementById('chances');
+     divChance.innerHTML = ""
+     divChance.innerHTML = "Remaining chances: "+chances;
+}
+function resetAll() {   
     updateAlphabet();
     updateModes();
     updateWord();
+    updateChances();
     game.guessed = new Set();
    
 
@@ -93,6 +117,7 @@ game.addMode("RANDOM", (evt) => {
     curr.innerText = "RANDOM"
     game.curr = game.words
     game.newGen()
+    chances = game.chances;
     resetAll()
     updateWord()
 
@@ -100,9 +125,10 @@ game.addMode("RANDOM", (evt) => {
 game.addMode("IRREGULAR VERBS", (evt) => {
     curr.innerText = "IRREGULAR VERBS";
     game.curr = game.verbs
-    game.newGen()
-    resetAll()
-    updateWord()
+    game.newGen();
+    chances = game.chances;
+    resetAll();
+    updateWord();
 
 })
 resetAll()
