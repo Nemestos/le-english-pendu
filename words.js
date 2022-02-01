@@ -22,7 +22,7 @@ export default words = [
     },
     {
         "English": "Inspite",
-        "French": "of En dépit de"
+        "French": "En dépit de"
     },
     {
         "English": "Instead",
@@ -293,8 +293,8 @@ export default words = [
         "French": "Embaucher quelqu’un"
     },
     {
-        "English": "fire someone",
-        "French": "Licencié quelqu’un"
+        "English": "fire",
+        "French": "Licencier"
     },
     {
         "English": "manage",

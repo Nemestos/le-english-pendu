@@ -6,6 +6,7 @@ const modes = document.getElementById("modes")
 const curr = document.getElementById("curr-mode")
 const guess = document.getElementById("word")
 let chances = 0;
+let mode = 0;
 
 function genAlphabetItem(letter) {
     const elt = document.createElement("div");
@@ -22,9 +23,26 @@ function genAlphabetItem(letter) {
         chances = isExisting(letter)?chances:chances-=1
         if (chances<1){
             alphabet.innerHTML = lost();
+            let w = document.getElementById('word');
+            let def = document.createElement("def");
+            if(mode == 1)
+            {
+                w.innerHTML = `Word: ${game.to_guess.English} || French: `;
+                def.innerHTML = `${game.to_guess.French}`;
+            }else{
+                w.innerHTML = `Base: ${game.to_guess.Base} || Past-simple: `;
+                def.innerHTML = `${game.to_guess.PastSimple} || Past-Participle: ${game.to_guess.PastParticiple}`;
+            }
+
+        
+            w.appendChild(def);
+            
+            }
+        else{
+            divChance.innerHTML = "Remaining chances: "+chances;
+            updateWord()
         }
-        divChance.innerHTML = "Remaining chances: "+chances;
-        updateWord()
+       
     })
     elt.innerText = letter
     return elt
@@ -37,7 +55,7 @@ function getWord(){
 function lost(){
     return `
     <div id="lost">
-    <h1>You lost !</h1>
+    <h1>You lose !</h1>
     </div>
     `
 }
@@ -114,6 +132,7 @@ function resetAll() {
 
 const game = new Game();
 game.addMode("RANDOM", (evt) => {
+    mode = 1;
     curr.innerText = "RANDOM"
     game.curr = game.words
     game.newGen()
@@ -123,8 +142,9 @@ game.addMode("RANDOM", (evt) => {
 
 })
 game.addMode("IRREGULAR VERBS", (evt) => {
+    mode = 2;
     curr.innerText = "IRREGULAR VERBS";
-    game.curr = game.verbs
+    game.curr = game.verbs;
     game.newGen();
     chances = game.chances;
     resetAll();
