@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,19 +8,24 @@
     <title>Hangman's game</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-<div class="wrapper">
 
-    <h1>ENGLISH HANGMAN'S GAME</h1>
-    <p id="curr-mode">NO MODE SELECTED</p>
-    <p>Use the predefined alphabet to guess the word</p>
-</div>
-<div class="wrapper vertical">
-    <div id="alphabet"></div>
-    <div id="modes"></div>
-    <div id="word"></div>
-    <div id="chances"></div>
-</div>
+<body>
+    <div class="wrapper">
+
+        <h1>ENGLISH HANGMAN'S GAME</h1>
+        <p id="curr-mode">NO MODE SELECTED</p>
+        <p>Use the predefined alphabet to guess the word</p>
+    </div>
+    <div class="wrapper vertical">
+        <div id="alphabet"></div>
+        <div id="modes"></div>
+        <div id="word"></div>
+        <div class="horizontal">
+            <div id="chances"></div>
+            <div><img src="hint.png" id="hint"></div>
+        </div>
+    </div>
 </body>
 <script type="module" src="script.js"></script>
+
 </html>

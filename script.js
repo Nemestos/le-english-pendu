@@ -5,6 +5,7 @@ const alphabet = document.getElementById("alphabet");
 const modes = document.getElementById("modes")
 const curr = document.getElementById("curr-mode")
 const guess = document.getElementById("word")
+const hint = document.getElementById("hint")
 let chances = 0;
 let mode = 0;
 
@@ -12,58 +13,71 @@ function genAlphabetItem(letter) {
     const elt = document.createElement("div");
     elt.id = "letter"
     elt.dataset.letter = letter
-    const divChance = document.getElementById("chances");
+    if (game.to_guess != null && isGuessed(letter.toUpperCase())) {
+        elt.classList.add("disabled")
+        elt.style.pointerEvents = "none"
+        elt.style.backgroundColor = isExisting(letter) ? "green" : "red"
+    }
     elt.addEventListener("click", (evt) => {
         game.guessed.add(letter)
         elt.classList.add("disabled")
         elt.style.pointerEvents = "none"
-        elt.style.backgroundColor = isExisting(letter)?"green":"red"
-        let divChance = document.getElementById('chances');
-        divChance.innerHTML = ""
-        chances = isExisting(letter)?chances:chances-=1
-        if (chances<1){
-            alphabet.innerHTML = lost();
-            let w = document.getElementById('word');
-            let def = document.createElement("def");
-            if(mode == 1)
-            {
-                w.innerHTML = `Word: ${game.to_guess.English} || French: `;
-                def.innerHTML = `${game.to_guess.French}`;
-            }else{
-                w.innerHTML = `Base: ${game.to_guess.Base} || Past-simple: `;
-                def.innerHTML = `${game.to_guess.PastSimple} || Past-Participle: ${game.to_guess.PastParticiple}`;
-            }
+        elt.style.backgroundColor = isExisting(letter) ? "green" : "red"
 
-        
-            w.appendChild(def);
-            
-            }
-        else{
-            divChance.innerHTML = "Remaining chances: "+chances;
-            updateWord()
-        }
-       
+        chances = isExisting(letter) ? chances : chances -= 1
+        updateChance()
+
     })
     elt.innerText = letter
     return elt
 }
+function updateChance() {
+    let divChance = document.getElementById('chances');
+    divChance.innerHTML = ""
+    if (chances < 1) {
 
-function getWord(){
-    return curr.innerText=="RANDOM"?game.to_guess.English:game.to_guess.Base
+        alphabet.innerHTML = lost();
+        let w = document.getElementById('word');
+        let def = document.createElement("def");
+        if (mode == 1) {
+            w.innerHTML = `Word: ${game.to_guess.English} || French: `;
+            def.innerHTML = `${game.to_guess.French}`;
+        } else {
+            w.innerHTML = `Base: ${game.to_guess.Base} || Past-simple: `;
+            def.innerHTML = `${game.to_guess.PastSimple} || Past-Participle: ${game.to_guess.PastParticiple}`;
+        }
+
+
+        w.appendChild(def);
+
+    }
+    else {
+        console.log(chances)
+        divChance.innerHTML = "Remaining chances: " + chances;
+        updateWord()
+    }
+}
+function isGuessed(letter) {
+    const word = getWord()
+
+    return word.includes(letter.toLowerCase()) && game.guessed.has(letter)
+}
+function getWord() {
+    return curr.innerText == "RANDOM" ? game.to_guess.English : game.to_guess.Base
 }
 
-function lost(){
+function lost() {
     return `
     <div id="lost">
     <h1>You lose !</h1>
     </div>
     `
 }
-function isWinning(){
-    const w= getWord()
+function isWinning() {
+    const w = getWord()
 
 }
-function isExisting(letter){
+function isExisting(letter) {
     const w = getWord()
     return w.toUpperCase().includes(letter)
 }
@@ -110,23 +124,40 @@ function updateWord() {
         const w = getWord()
         console.log(game.guessed)
         for (const x of w.toUpperCase()) {
-            const elt = genWordGuessItem(game.guessed.has(x)?x:"_")
+
+            const elt = genWordGuessItem(game.guessed.has(x) ? x : "_")
             guess.appendChild(elt)
         }
     }
 }
-function updateChances(){
+function updateChances() {
     let divChance = document.getElementById('chances');
-     divChance.innerHTML = ""
-     divChance.innerHTML = "Remaining chances: "+chances;
+    divChance.innerHTML = ""
+    divChance.innerHTML = "Remaining chances: " + chances;
 }
-function resetAll() {   
+function getRandomLetterNotGuess() {
+    let letter = ""
+    let i = 0
+    const word = getWord()
+
+    while (letter == "") {
+        if (game.guessed.has(word[i].toUpperCase())) {
+            i += 1
+            continue
+        }
+        letter = word[i]
+    }
+
+    return letter
+}
+function resetAll() {
+    game.guessed = new Set();
     updateAlphabet();
     updateModes();
     updateWord();
     updateChances();
-    game.guessed = new Set();
-   
+    console.log(game.guessed)
+
 
 }
 
@@ -152,4 +183,14 @@ game.addMode("IRREGULAR VERBS", (evt) => {
 
 })
 resetAll()
+hint.addEventListener("click", () => {
+    if (game.to_guess != null) {
+        let random = getRandomLetterNotGuess()
+        game.guessed.add(random.toUpperCase())
+        chances = Math.floor(chances / 2)
+        updateAlphabet()
+        updateWord()
+        updateChance()
+    }
+})
 
