@@ -13,11 +13,17 @@ function genAlphabetItem(letter) {
     const elt = document.createElement("div");
     elt.id = "letter"
     elt.dataset.letter = letter
-    if (game.to_guess != null && isGuessed(letter.toUpperCase())) {
-        elt.classList.add("disabled")
-        elt.style.pointerEvents = "none"
-        elt.style.backgroundColor = isExisting(letter) ? "green" : "red"
+    if (game.to_guess != null) {
+        if (isGuessed(letter.toUpperCase())) {
+
+            elt.classList.add("disabled")
+            elt.style.pointerEvents = "none"
+        }
+        if (game.guessed.has(letter.toUpperCase())) {
+            elt.style.backgroundColor = isGuessed(letter) ? "green" : "red"
+        }
     }
+
     elt.addEventListener("click", (evt) => {
         game.guessed.add(letter)
         elt.classList.add("disabled")
